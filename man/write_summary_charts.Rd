@@ -27,6 +27,7 @@ to show on each plot.}
 on each plot.}
 }
 \description{
-Creates a Microsoft Word document containing summary charts
-derived from an analysis.
+Creates a Microsoft Word file or HTML report containing summary charts
+derived from an analysis. The file type is determined by the file extension
+of \code{output_path}, which must be either \code{.docx} or \code{.html}.
 }

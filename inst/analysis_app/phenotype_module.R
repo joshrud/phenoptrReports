@@ -7,13 +7,26 @@ phenotype_module_ui = function(id, values, show_score, show_help) {
 
   choices = setNames(c(NA, values), c('None', values))
 
+  phenoptr_colors = c(
+    "#26A2ED", "#41C572", "#F05050", "#F4D646", "#B2A1E2", "#F99B15", "#98C7DC",
+    "#84D9A3", "#72C3F3", "#F58D8D", "#F8E487", "#CDC2EC", "#FBBE67", "#BCDBE8",
+    "#1F5F37", "#124E72", "#732626", "#756722", "#554D6C", "#784A0A", "#49606A",
+    "#C6EED5", "#BEE3FA", "#FBCBCB", "#FCF3C8", "#E8E3F6", "#FDE1B9", "#E0EEF5",
+    "#319456", "#1D7AB2", "#B43C3C", "#B7A135", "#8679AA", "#BB7410", "#7295A5"
+  )
+
   # Build the input row with optional help button
   input_row = list(
     shiny::column(5, shiny::textInput(ns("phenotype"), 'Phenotype:',
                                       placeholder='Phenotype definition')),
     shiny::column(5, shiny::selectInput(ns("expression"), 'Expression:',
                                         choices=choices,
-                                        selected='None')))
+                                        selected='None')),
+    shiny::column(5, colourpicker::colourInput(ns('color'), 'Color:',
+                                               value=phenoptr_colors[1],
+                                               showColour='background',
+                                               palette="limited",
+                                               allowedCols = phenoptr_colors)))
   if (show_score)
     input_row = c(input_row, list(
       shiny::column(1, style='padding-top: 23px;',
@@ -70,6 +83,7 @@ phenotype_module = function(input, output, session, phenotypes, csd) {
   return(reactive({
     list(phenotype=input$phenotype,
          expression=input$expression,
+         color=input$color,
          score=input$score)
   }))
 }

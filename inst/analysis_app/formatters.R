@@ -46,6 +46,7 @@ format_all = function(all_data) {
   # Code generation
   paste0(
     format_header(),
+    format_colors(phenotype_values),
     format_path(all_data$input_path, all_data$field_col),
     format_tissue_categories(all_data$tissue_categories),
     format_phenotypes(phenos, .by),
@@ -75,6 +76,13 @@ library(phenoptr)
 library(phenoptrReports)
 library(openxlsx)
 \n\n')
+}
+
+# Format the inputted colors for the summary charts
+format_colors = function(phendat) {
+  message(str(phendat))
+  colors = paste0('"', paste(sapply(phendat, '[[', 'color'), collapse='", "'), '"')
+  stringr::str_glue("#colors for the tables \ncolororder = c({colors})\n\n")
 }
 
 # Format reading cell seg data and making a summary table
@@ -352,7 +360,7 @@ charts_path = file.path(
   "{escape_path(output_dir)}",
   "Charts.docx")
 if (file.exists(charts_path)) file.remove(charts_path)
-write_summary_charts(workbook_path, charts_path, .by=.by)
+write_summary_charts(workbook_path, charts_path, cols=colororder, .by=.by)
 
 # Save session info
 info_path = file.path(
