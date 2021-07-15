@@ -36,9 +36,8 @@ write_summary_report = function(csd_path=NULL, csd=NULL,
 
 #' Create summary charts from the results of an analysis
 #'
-#' Creates a Microsoft Word file or HTML report containing summary charts
-#' derived from an analysis. The file type is determined by the file extension
-#' of `output_path`, which must be either `.docx` or `.html`.
+#' Creates a Microsoft Word document containing summary charts
+#' derived from an analysis.
 #' @param workbook_path Path to an Excel file containing sheets written
 #'   by [write_counts_sheet], etc.
 #' @param output_path Path to write the resulting file.
@@ -167,6 +166,14 @@ write_session_info = function(path) {
 temp_dir_by = function(output_path) {
   file.path(dirname(output_path), 'temp')
 }
+
+create_empty_dir = function(path) {
+  if (dir.exists(path))
+    list.files(path, full.names=TRUE) %>% purrr::walk(file.remove)
+  else
+    dir.create(path, recursive=TRUE)
+}
+
 
 # A pleasing palette with lots of entries
 phenoptr_colors = c(
